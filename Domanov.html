@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domanov / LAN-Killer - dev.os</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            overflow: hidden; /* Отключение скроллинга во время загрузки */
+        }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: lime;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        #content {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            display: none; /* Скрываем основной контент до полной загрузки */
+        }
+
+        h1,
+        p {
+            color: lime;
+        }
+
+        h2 {
+            color: lime;
+            margin-top: 20px;
+        }
+
+        a {
+            color: lightgreen;
+            text-decoration: none;
+        }
+
+        .wanted {
+            color: red;
+            font-size: 28px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let percent = 0;
+            const loadingScreen = document.getElementById('loadingScreen');
+            const content = document.getElementById('content');
+
+            function updateLoadingScreen() {
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    loadingScreen.style.display = 'none';
+                    content.style.display = 'block';
+                } else {
+                    percent++;
+                    loadingScreen.textContent = `Loading... ${percent}%`;
+                }
+            }
+
+            const interval = setInterval(updateLoadingScreen, 50); // Симуляция загрузки каждые 50ms
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loadingScreen">Loading... 0%</div>
+    <div id="content">
+        <h1>Domanov / LAN-Killer</h1>
+        <p><strong>Alias:</strong> LAN-Killer</p>
+        <h2>Skills</h2>
+        <p>Domanov специализируется на взломе и нарушении работы локальных сетей, умеет находить и использовать уязвимости в сетевых оборудованиих и протоколах для достижения своих целей.</p>
+        <h2>Earnings</h2>
+        <p>LAN-Killer заработал более 5 миллионов долларов посредством эксплуатации уязвимостей в сетях, включая:</p>
+        <ul>
+            <li>Атаки на корпоративные сети</li>
+            <li>Кража конфиденциальных сетевых данных</li>
+            <li>Разработка инструментов для тестирования на проникновение</li>
+        </ul>
+        <h2>History</h2>
+        <p>Domanov начал с карьерой в области сетевой безопасности, но быстро открыл для себя более прибыльную сторону своих навыков, выбрав незаконные методы.</p>
+        <h2 class="wanted">В Розыске!</h2>
+        <p>LAN-Killer разыскивается за организацию атак на сети крупных корпораций и кражу данных.</p>
+
+        <a href="index.html">Back to Participants</a>
+    </div>
+</body>
+
+</html>

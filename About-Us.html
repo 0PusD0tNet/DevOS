@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас - dev.os</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            overflow: hidden; /* Отключение скроллинга во время загрузки */
+        }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: lime;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        #content {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            display: none; /* Скрываем основной контент до полной загрузки */
+        }
+
+        h1, h2, p {
+            color: lime;
+        }
+
+        a {
+            color: lightgreen;
+            text-decoration: none;
+        }
+
+        .wanted {
+            color: red;
+            font-size: 28px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Мини-игра */
+        #game-container {
+            margin-top: 20px;
+            border: 2px solid lime;
+            height: 300px;
+            position: relative; /* Включаем относительное позиционирование */
+            overflow: hidden;
+            color: lime;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .game-object {
+            width: 50px;
+            height: 50px;
+            background-color: lime;
+            position: absolute;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let percent = 0;
+            const loadingScreen = document.getElementById('loadingScreen');
+            const content = document.getElementById('content');
+
+            const hasLoadedOnce = sessionStorage.getItem('loadedAbout');
+            if (!hasLoadedOnce) {
+                function updateLoadingScreen() {
+                    if (percent >= 100) {
+                        clearInterval(interval);
+                        loadingScreen.style.display = 'none';
+                        content.style.display = 'block';
+                        sessionStorage.setItem('loadedAbout', 'true');
+                    } else {
+                        percent++;
+                        loadingScreen.textContent = `Загрузка... ${percent}%`;
+                    }
+                }
+
+                const interval = setInterval(updateLoadingScreen, 50); // Симуляция загрузки каждые 50ms
+            } else {
+                loadingScreen.style.display = 'none';
+                content.style.display = 'block';
+            }
+        });
+
+        function startMiniGame() {
+            const gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = ''; // Очистить игровое поле
+            let score = 0;
+
+            function createRandomObject() {
+                const object = document.createElement('div');
+                object.classList.add('game-object');
+                object.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 50)) + 'px';
+                object.style.top = Math.floor(Math.random() * (gameContainer.clientHeight - 50)) + 'px';
+                object.style.transition = "transform 0.5s";
+
+                object.addEventListener('click', () => {
+                    score++;
+                    object.remove();
+                    alert('Поймано! Счет: ' + score);
+                });
+
+                gameContainer.appendChild(object);
+            }
+
+            setInterval(createRandomObject, 1000); // Создание нового объекта каждую секунду
+        }
+    </script>
+</head>
+
+<body>
+    <div id="loadingScreen">Загрузка... 0%</div>
+    <div id="content">
+        <h1>О нас</h1>
+        <h2>Кто мы такие</h2>
+        <p>Мы — группа профессионалов, специализирующихся на кибербезопасности и информационных технологиях. Наша миссия — защищать цифровые активы и предоставлять решения по повышению безопасности высшего уровня.</p>
+        <h2>Чем мы занимаемся</h2>
+        <p>Мы разрабатываем и внедряем самые передовые технологии для защиты конфиденциальных данных и предотвращения кибератак. Наша команда также занимается этическим взломом и оценкой уязвимостей, чтобы обеспечить надежную защиту для наших партнеров.</p>
+
+        <h2>Мини-игра</h2>
+        <div id="game-container" onclick="startMiniGame()">
+            Нажмите, чтобы начать мини-игру!
+        </div>
+
+        <a href="index.html" onclick="sessionStorage.removeItem('loadedAbout')">Назад к участникам</a>
+    </div>
+</body>
+
+</html>

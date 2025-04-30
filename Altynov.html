@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John "Nebula" Doe - dev.os</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            overflow: hidden; /* Отключение скроллинга во время загрузки */
+        }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: lime;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        #content {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            display: none; /* Скрываем основной контент до полной загрузки */
+        }
+
+        h1,
+        p {
+            color: lime;
+        }
+
+        h2 {
+            color: lime;
+            margin-top: 20px;
+        }
+
+        a {
+            color: lightgreen;
+            text-decoration: none;
+        }
+
+        .wanted {
+            color: red;
+            font-size: 28px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let percent = 0;
+            const loadingScreen = document.getElementById('loadingScreen');
+            const content = document.getElementById('content');
+
+            function updateLoadingScreen() {
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    loadingScreen.style.display = 'none';
+                    content.style.display = 'block';
+                } else {
+                    percent++;
+                    loadingScreen.textContent = `Loading... ${percent}%`;
+                }
+            }
+
+            const interval = setInterval(updateLoadingScreen, 50); // Симуляция загрузки каждые 50ms
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loadingScreen">Loading... 0%</div>
+    <div id="content">
+        <h1>Altynov / NetCrimer</h1>
+        <p><strong>Alias:</strong> NetCrimer</p>
+        <h2>Skills</h2>
+        <p>Работа с немногими базами данных, и хорошее владение языками программирования, что позволяет ему быстро проникать в максимально защищенные системы. Он также мастер в анализе программного обеспечения и сети, обладает глубокими знаниями криптографии и технологий защиты информации, что делает его незаменимым в сложных разведывательных операциях.</p>
+
+        <h2>Earnings</h2>
+        <p>Общий заработок NetCrimer за его киберпреступную карьеру превышает 10 миллионов долларов. Его основные источники дохода включают:</p>
+        <ul>
+            <li>Кибер-шантаж</li>
+            <li>Продажа конфиденциальных данных</li>
+            <li>Разработка и продажа вредоносного ПО</li>
+        </ul>
+
+        <h2>History</h2>
+        <p>NetCrimer начал свою карьеру как талантливый программист, работающий на крупные технологические компании. Однако, разочаровавшись в законных методах, он принял решение использовать свои навыки для незаконных целей. Сначала его действия были незаметными, но с увеличением уровня мастерства выросла и его известность. Теперь о его деяниях известно не только в родной стране, но и по всему миру.</p>
+
+        <h2 class="wanted">В Розыске!</h2>
+        <p>NetCrimer разыскивается правоохранительными органами за многочисленные киберпреступления. Его местонахождение неизвестно, и он продолжает скрываться от правосудия. За любую информацию, ведущую к его аресту, назначено вознаграждение.</p>
+
+        <a href="index.html" onclick="sessionStorage.removeItem('loaded')">Back to Participants</a>
+    </div>
+
+</body>
+</html>

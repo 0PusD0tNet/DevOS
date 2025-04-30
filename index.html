@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dev.os</title>
+    <style>
+      body {
+        background-color: black;
+        color: green;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 20px;
+        overflow: hidden; /* Отключение скроллинга во время загрузки */
+      }
+
+      .boot-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        background-color: black;
+        color: green;
+        font-size: 18px;
+        flex-direction: column;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .bios {
+        white-space: pre-line; /* Сохраняем форматирование текста BIOS */
+        text-align: left;
+        margin-top: 20px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .binary-text {
+        display: inline-block;
+        opacity: 0;
+      }
+
+      #content {
+        display: none; /* Скрываем основной контент до полной загрузки */
+      }
+
+      h1 {
+        color: lime;
+      }
+
+      h2 {
+        color: lime;
+      }
+
+      .devos-button {
+        color: red;
+        text-decoration: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 24px;
+        transition: color 0.3s ease;
+      }
+
+      .devos-button:hover {
+        color: darkred;
+      }
+
+      .link {
+        color: lightgreen;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+        transition: all 0.3s ease;
+      }
+
+      .link:hover {
+        transform: scale(1.05);
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .cursor {
+        border-right: 2px solid lime;
+        animation: blink 0.75s step-end infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Экран загрузки/запуска -->
+    <div id="bootScreen" class="boot-screen">Booting...</div>
+
+    <!-- Фейк BIOS экран -->
+    <div id="biosScreen" class="boot-screen hidden">
+      <div class="bios">
+        Initializing BIOS...
+        <br />
+        Processor: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz <br />
+        Memory: 16GB DDR4 <br />
+        Disk: Samsung SSD 860 250GB <br />
+        System Status: OK <br /><br />
+        Press DEL to enter BIOS Setup <br /><br />
+        Starting system...
+      </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div id="content">
+      <h1 class="binary" data-text="Welcome to dev.os">0101010<span class="cursor"></span></h1>
+      <h2 class="binary" data-text="Participants Database">0101010<span class="cursor"></span></h2>
+
+      <a href="Altynov.html" class="link binary" data-text="Altynov / NetCrimer">0011001<span class="cursor"></span></a>
+      <a href="Bukreev.html" class="link binary" data-text="Bukreev / RedWork">1100110<span class="cursor"></span></a>
+      <a href="Razinkov.html" class="link binary" data-text="Razinkov / WebQQ">0110011<span class="cursor"></span></a>
+      <a href="Domanov.html" class="link binary" data-text="Domanov / LAN-Killer">1001100<span class="cursor"></span></a>
+      <a href="About-Us.html" class="link binary" data-text="About Us">0011001<span class="cursor"></span></a>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const bootScreen = document.getElementById('bootScreen');
+        const biosScreen = document.getElementById('biosScreen');
+        const content = document.getElementById('content');
+
+        // Показать BIOS после краткой задержки
+        setTimeout(() => {
+          bootScreen.classList.add('hidden');
+          biosScreen.classList.remove('hidden');
+        }, 2000); // 2 seconds boot delay
+
+        // Показать контент после еще большей задержки
+        setTimeout(() => {
+          biosScreen.classList.add('hidden');
+          content.style.display = 'block';
+          showTextSequentially();
+        }, 5000); // 3 seconds BIOS delay
+
+        // Функция для последовательного показа текста
+        function showTextSequentially() {
+          const elements = document.querySelectorAll('.binary');
+          let delay = 0;
+
+          elements.forEach((el, index) => {
+            setTimeout(() => {
+              showBinaryAnimation(el);
+            }, delay);
+            delay += (el.getAttribute('data-text').length + 10) * 100; // Adjust delay based on text length and interval time
+          });
+        }
+
+        // Функция для показа текста с анимацией двоичного кода
+        function showBinaryAnimation(el) {
+          let text = el.getAttribute('data-text');
+          let index = 0;
+          let binaryText = el;
+          let cursor = el.querySelector('.cursor');
+
+          function typeBinary() {
+            if (index <= text.length) {
+              setTimeout(() => {
+                binaryText.textContent = text.substring(0, index) + Array.from({ length: text.length - index}, () => Math.random() < 0.5 ? '0' : '1').join('');
+                binaryText.appendChild(cursor);
+                index++;
+                typeBinary();
+              }, 50); // Время между заменами символов
+            } else {
+              binaryText.textContent = text;
+              if (cursor) cursor.remove();
+            }
+          }
+
+          typeBinary();
+        }
+      });
+    </script>
+  </body>
+</html>
